@@ -7,37 +7,37 @@ class InputPage extends StatefulWidget {
 }
 
 class _InputPageState extends State<InputPage> {
-  TextEditingController _textController = TextEditingController();
-  String formattedText = '';
+  // TextEditingController _textController = TextEditingController();
+  // String formattedText = '';
 
-  // @override
-  // void initState() {
-  //   super.initState();
+  //  @override
+  //  void initState() {
+  //    super.initState();
 
-  //   _textController.addListener(() {
-  //     setState(() {
-  //       if (_textController.text.length > 7) {
-  //         // Ограничиваем длину ввода до 8 символов
-  //         _textController.text = _textController.text.substring(0, 8);
-  //       }
+  //    _textController.addListener(() {
+  // //     setState(() {
+  // //       if (_textController.text.length > 7) {
+  // //         // Ограничиваем длину ввода до 8 символов
+  // //         _textController.text = _textController.text.substring(0, 8);
+  // //       }
 
-  //       String inputText = _textController.text;
-  //       if (inputText.length >= 3) {
-  //         // Добавляем скобки вокруг первых 3 чисел
-  //         String firstThreeDigits = inputText.substring(0, 3);
-  //         inputText = '(${inputText.substring(0, 3)})';
+  // //       String inputText = _textController.text;
+  // //       if (inputText.length >= 3) {
+  // //         // Добавляем скобки вокруг первых 3 чисел
+  // //         String firstThreeDigits = inputText.substring(0, 3);
+  // //         inputText = '(${inputText.substring(0, 3)})';
 
-  //         if (inputText.length >= 7) {
-  //           // Добавляем тире между 3-им и 4-ым, а также между 6-ым и 7-ым числами
-  //           inputText =
-  //               '${inputText.substring(0, 7)}-${inputText.substring(7)}';
-  //         }
-  //       }
+  // //         if (inputText.length >= 7) {
+  // //           // Добавляем тире между 3-им и 4-ым, а также между 6-ым и 7-ым числами
+  // //           inputText =
+  // //               '${inputText.substring(0, 7)}-${inputText.substring(7)}';
+  // //         }
+  // //       }
 
-  //       formattedText = inputText;
-  //     });
-  //   });
-  // }
+  // //       formattedText = inputText;
+  //      });
+  //  //  });
+  //  }
 
   // @override
   // void dispose() {
@@ -55,7 +55,9 @@ class _InputPageState extends State<InputPage> {
             padding: const EdgeInsets.all(8.0),
             child: Container(
                 child: TextFormField(
-              keyboardType: TextInputType.number,
+                enableSuggestions: false,
+                maxLength:  28,
+                keyboardType: TextInputType.text,
               // validator: (value) {
               //   final isDigitsOnly = int.tryParse(value!);
               //   return isDigitsOnly == null
@@ -75,11 +77,12 @@ class _InputPageState extends State<InputPage> {
 }
 
 class DateInputFormatter extends TextInputFormatter {
+  int times = 0;
   @override
   TextEditingValue formatEditUpdate(
       TextEditingValue oldValue, TextEditingValue newValue) {
     final text = newValue.text;
-    int a = 1;
+    int times = 0;
     if (text.length > 2 && !text.contains(')')) {
       return TextEditingValue(
         text: '+7 (${text.substring(0, 3)}) ', //${text.substring(3)}',
@@ -87,16 +90,19 @@ class DateInputFormatter extends TextInputFormatter {
       );
     }
     if (text.length > 11 && !text.contains('-')) {
-      a= 0;
+      times++;
+      print(text.length);
       return TextEditingValue(
         text: '${text.substring(0, 12)} - ', //${text.substring(3)}',
         selection: TextSelection.collapsed(offset: text.length + 3),
       );
     }
-    if (text.length > 13 && text.contains('-')) {
+    if (text.length > 16 && text.contains('-') && times < 2) {
+      times++;
+      print(text.length);
       return TextEditingValue(
-        text: '${text.substring(0, 17)} -', //${text.substring(3)}',
-        selection: TextSelection.collapsed(offset: text.length + 3),
+        text: '${text.substring(0, 17)} - ',//${text.substring(16)}',
+        selection: TextSelection.collapsed(offset: text.length + 2,affinity: TextAffinity.downstream),
       );
     }
     return newValue;

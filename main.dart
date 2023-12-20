@@ -1,80 +1,178 @@
+// import 'package:flutter/material.dart';
+// import 'package:flutter/services.dart';
+
+// class InputPage extends StatefulWidget {
+//   @override
+//   _InputPageState createState() => _InputPageState();
+// }
+
+// class _InputPageState extends State<InputPage> {
+//   // TextEditingController _textController = TextEditingController();
+//   // String formattedText = '';
+
+//   //  @override
+//   //  void initState() {
+//   //    super.initState();
+
+//   //    _textController.addListener(() {
+//   // //     setState(() {
+//   // //       if (_textController.text.length > 7) {
+//   // //         // Ограничиваем длину ввода до 8 символов
+//   // //         _textController.text = _textController.text.substring(0, 8);
+//   // //       }
+
+//   // //       String inputText = _textController.text;
+//   // //       if (inputText.length >= 3) {
+//   // //         // Добавляем скобки вокруг первых 3 чисел
+//   // //         String firstThreeDigits = inputText.substring(0, 3);
+//   // //         inputText = '(${inputText.substring(0, 3)})';
+
+//   // //         if (inputText.length >= 7) {
+//   // //           // Добавляем тире между 3-им и 4-ым, а также между 6-ым и 7-ым числами
+//   // //           inputText =
+//   // //               '${inputText.substring(0, 7)}-${inputText.substring(7)}';
+//   // //         }
+//   // //       }
+
+//   // //       formattedText = inputText;
+//   //      });
+//   //  //  });
+//   //  }
+
+//   // @override
+//   // void dispose() {
+//   //   _textController.dispose();
+//   //   super.dispose();
+//   // }
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return MaterialApp(
+//       home: Scaffold(
+//         appBar: AppBar(title: Text('Date Input')),
+//         body: Center(
+//           child: Padding(
+//             padding: const EdgeInsets.all(8.0),
+//             child: Container(
+//                 child: TextFormField(
+//                 enableSuggestions: false,
+//                 maxLength:  22,
+//                 keyboardType: TextInputType.number,
+//               // validator: (value) {
+//               //   final isDigitsOnly = int.tryParse(value!);
+//               //   return isDigitsOnly == null
+//               //       ? 'Input needs to be digits only'
+//               //       : null;
+//               // },
+//               inputFormatters: [
+//                 DateInputFormatter(),
+//               ],
+//               decoration: InputDecoration(labelText: 'Date'),
+//             )),
+//           ),
+//         ),
+//       ),
+//     );
+//   }
+// }
+
+// class DateInputFormatter extends TextInputFormatter {
+//   int times = 0;
+//   @override
+//   TextEditingValue formatEditUpdate(
+//       TextEditingValue oldValue, TextEditingValue newValue) {
+//     final text = newValue.text;
+
+//     if (text.length > 2 && !text.contains(')')) {
+//       return TextEditingValue(
+//         text: '+7 (${text.substring(0, 3)}) ',
+//        // selection: TextSelection.collapsed(offset: text.length + 6),
+//       );
+//     }
+//     if (text.length > 11 && !text.contains('-')) {
+//       times++;
+//       print(text.length);
+//       return TextEditingValue(
+//         text: '${text.substring(0, 12)} - ',
+//         //selection: TextSelection.collapsed(offset: text.length + 3),
+//       );
+//     }
+//     if (text.length > 16 && text.contains('-') && times < 2) {
+//       times++;
+//       print(text.length);
+//       return TextEditingValue(
+//         text: '${text.substring(0, 17)} - ',
+//         //selection: TextSelection.collapsed(offset: text.length + 2,affinity: TextAffinity.upstream),
+//        // selection: TextSelection.fromPosition(TextPosition(offset: 19)),
+//        //selection: TextSelection(baseOffset: 3, extentOffset: 25)
+//       );
+
+//     }
+//     return newValue;
+//   }
+// }
+// //   Widget build(BuildContext context) {
+// //     return Scaffold(
+// //       appBar: AppBar(
+// //         title: Text('Input Page'),
+// //       ),
+// //       body: Padding(
+// //         padding: const EdgeInsets.all(16.0),
+// //         child: Column(children: [
+// //           TextField(
+// //             controller: _textController,
+// //             decoration: InputDecoration(
+// //               hintText: 'Введите текст',
+// //             ),
+// //           ),
+// //           SizedBox(height: 16.0),
+// //           Text(
+// //             formattedText,
+// //             style: TextStyle(fontSize: 24.0),
+// //           ),
+
+// //         ]),
+// //       ),
+// //     );
+// //   }
+// // }
+
+// void main() {
+//   runApp(MaterialApp(
+//     home: InputPage(),
+//   ));
+// }
+
+// import 'package:flutter/material.dart';
+// import 'package:flutter/services.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-class InputPage extends StatefulWidget {
-  @override
-  _InputPageState createState() => _InputPageState();
+void main() {
+  runApp(MyApp());
 }
 
-class _InputPageState extends State<InputPage> {
-  // TextEditingController _textController = TextEditingController();
-  // String formattedText = '';
-
-  //  @override
-  //  void initState() {
-  //    super.initState();
-
-  //    _textController.addListener(() {
-  // //     setState(() {
-  // //       if (_textController.text.length > 7) {
-  // //         // Ограничиваем длину ввода до 8 символов
-  // //         _textController.text = _textController.text.substring(0, 8);
-  // //       }
-
-  // //       String inputText = _textController.text;
-  // //       if (inputText.length >= 3) {
-  // //         // Добавляем скобки вокруг первых 3 чисел
-  // //         String firstThreeDigits = inputText.substring(0, 3);
-  // //         inputText = '(${inputText.substring(0, 3)})';
-
-  // //         if (inputText.length >= 7) {
-  // //           // Добавляем тире между 3-им и 4-ым, а также между 6-ым и 7-ым числами
-  // //           inputText =
-  // //               '${inputText.substring(0, 7)}-${inputText.substring(7)}';
-  // //         }
-  // //       }
-
-  // //       formattedText = inputText;
-  //      });
-  //  //  });
-  //  }
-
-  // @override
-  // void dispose() {
-  //   _textController.dispose();
-  //   super.dispose();
-  // }
-
+class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(title: Text('Date Input')),
-        body: Center(
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Container(
-                child: TextFormField(
-                enableSuggestions: false,
-                maxLength:  28,
-                keyboardType: TextInputType.text,
-              // validator: (value) {
-              //   final isDigitsOnly = int.tryParse(value!);
-              //   return isDigitsOnly == null
-              //       ? 'Input needs to be digits only'
-              //       : null;
-              // },
-              inputFormatters: [
-                DateInputFormatter(),
-              ],
-              decoration: InputDecoration(labelText: 'Date'),
-            )),
-          ),
-        ),
-      ),
+      home: MyPage(),
+      debugShowCheckedModeBanner: false,
     );
   }
 }
+
+class MyPage extends StatefulWidget {
+  @override
+  _MyPageState createState() => _MyPageState();
+}
+
+bool isButtonVisible(bool showButton, String text){
+  return showButton = text.length > 21;
+}
+  
+
 
 class DateInputFormatter extends TextInputFormatter {
   int times = 0;
@@ -82,163 +180,131 @@ class DateInputFormatter extends TextInputFormatter {
   TextEditingValue formatEditUpdate(
       TextEditingValue oldValue, TextEditingValue newValue) {
     final text = newValue.text;
-    int times = 0;
     if (text.length > 2 && !text.contains(')')) {
-      return TextEditingValue(
-        text: '+7 (${text.substring(0, 3)}) ', //${text.substring(3)}',
-        selection: TextSelection.collapsed(offset: text.length + 6),
-      );
+      return TextEditingValue(text: '+7 (${text.substring(0, 3)}) ');
     }
     if (text.length > 11 && !text.contains('-')) {
       times++;
-      print(text.length);
-      return TextEditingValue(
-        text: '${text.substring(0, 12)} - ', //${text.substring(3)}',
-        selection: TextSelection.collapsed(offset: text.length + 3),
-      );
+      return TextEditingValue(text: '${text.substring(0, 12)} - ');
     }
     if (text.length > 16 && text.contains('-') && times < 2) {
       times++;
-      print(text.length);
-      return TextEditingValue(
-        text: '${text.substring(0, 17)} - ',//${text.substring(16)}',
-        selection: TextSelection.collapsed(offset: text.length + 2,affinity: TextAffinity.downstream),
-      );
+      return TextEditingValue(text: '${text.substring(0, 17)} - ');
     }
     return newValue;
   }
 }
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: Text('Input Page'),
-//       ),
-//       body: Padding(
-//         padding: const EdgeInsets.all(16.0),
-//         child: Column(children: [
-//           TextField(
-//             controller: _textController,
-//             decoration: InputDecoration(
-//               hintText: 'Введите текст',
-//             ),
-//           ),
-//           SizedBox(height: 16.0),
-//           Text(
-//             formattedText,
-//             style: TextStyle(fontSize: 24.0),
-//           ),
 
-//         ]),
-//       ),
-//     );
-//   }
-// }
+class _MyPageState extends State<MyPage> {
+  bool showButton = false;
+  TextEditingController _textController = TextEditingController();
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   _textController.addListener(() {});
+    
+  // }
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Center(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SizedBox(height: 20),
+            Row(children: [
+              SizedBox(
+                width: 20,
+              ),
+              IconButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (BuildContext context) => MyPage()),
+                    );
+                  },
+                  icon: Icon(Icons.arrow_back_ios)),
+            ]),
+            Spacer(),
+            Row(children: [
+              Spacer(),
+              Container(
+                width: 280,
+                padding: const EdgeInsetsDirectional.only(
+                    top: 0, bottom: 10, start: 10),
+                decoration: const BoxDecoration(
+                    color: Colors.white,
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black,
+                        offset: Offset(0, 0),
+                        blurStyle: BlurStyle.solid,
+                        spreadRadius: 1,
+                      ),
+                    ],
+                    borderRadius: BorderRadius.all(Radius.circular(20))),
+                child: TextFormField(
+                  enableInteractiveSelection: false,
+                  // controller: _textController,
+                  maxLength: 22,
+                  cursorHeight: 40,
+                  cursorColor: const Color.fromARGB(255, 174, 174, 174),
+                  keyboardType: TextInputType.number,
+                   onChanged: (value) {
+                      isButtonVisible(showButton, value);
+                   
+                    
+                  //     if(value.length > 4){
+                  //     showButton = true;
 
-void main() {
-  runApp(MaterialApp(
-    home: InputPage(),
-  ));
+                  //  }
+                  // },
+                  //  validator: (value) {
+                  //    final isDigitsOnly = int.tryParse(value!);
+                  //    return isDigitsOnly == null
+                  //        ? 'Input needs to be digits only'
+                  //        : null;
+                     },
+                  inputFormatters: [
+                    FilteringTextInputFormatter.allow(RegExp(r'[0-9\-\(\)\+ ]')),
+                    DateInputFormatter(),
+                    ],
+                  style: const TextStyle(
+                      fontSize: 26, fontWeight: FontWeight.w500),
+                  decoration: InputDecoration(
+                    counterText: '',
+                    hintText: '+7 (000) 000 - 00 - 00',
+                    border: InputBorder.none,
+                    hintStyle: const TextStyle(
+                      fontSize: 26,
+                      height: 2,
+                      fontWeight: FontWeight.w400,
+                    ),
+                    error: Container(color: Colors.black),
+                  ),
+                ),
+              ),
+              Spacer(),
+              if (showButton)
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (BuildContext context) => MyPage()),
+                    );
+                  },
+                  child: const Text('Button'),
+                ),
+            ]),
+            Spacer(),
+          ],
+        ),
+      ),
+    );
+  }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// import 'package:flutter/material.dart';
-// import 'package:flutter/services.dart';
-
-// void main() {
-//   runApp(MyApp());
-// }
-
-// class MyApp extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     return MaterialApp(
-//       home: MyPage(),
-//     );
-//   }
-// }
-
-// class MyPage extends StatefulWidget {
-//   @override
-//   _MyPageState createState() => _MyPageState();
-// }
-
-// class _MyPageState extends State<MyPage> {
-//   bool showButton = false;
-//   final chanks = [1, 2, 3, 4, 5, 6, 7, 8, 9];
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: Text('My Page'),
-//       ),
-//       body: Center(
-//         child: Column(
-//           mainAxisAlignment: MainAxisAlignment.center,
-//           children: [
-//             if (showButton)
-//               ElevatedButton(
-//                 onPressed: () {
-//                   Navigator.push(context, MaterialPageRoute(
-//                     builder: (BuildContext context) => MyPage()
-//                       ),
-//                     );
-//                 },
-//                 child: Text('Button'),
-//               ),
-//             SizedBox(height: 20),
-//             TextField(
-//               maxLength: 10,
-//               onChanged: (value) {
-//                 setState(() {
-//                   showButton = value.length > 9;
-//                 });
-//               },
-//               decoration: InputDecoration(
-//                 hintText: 'Введите текст',
-//                 border: OutlineInputBorder(),
-//               ),
-//               inputFormatters: <TextInputFormatter>[
-//               FilteringTextInputFormatter.digitsOnly
-//             ],
-//             ),
-//           ],
-//         ),
-//       ),
-//     );
-//   }
-// }
 
 
 

@@ -148,6 +148,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'dart:math';
 
 void main() {
   runApp(MyApp());
@@ -171,8 +172,6 @@ class MyPage extends StatefulWidget {
 // bool isButtonVisible(bool showButton, String text){
 //   return showButton = text.length > 21;
 // }
-  
-
 
 // class DateInputFormatter extends TextInputFormatter {
 //   int times = 0;
@@ -198,54 +197,76 @@ class MyPage extends StatefulWidget {
 class _MyPageState extends State<MyPage> {
   final TextEditingController _textController = TextEditingController();
   int times = 0;
+
+  void generateCode() {
+    String code = '';
+    for (int i = 0; i < 6; i++) code += (0 + Random().nextInt(9)).toString();
+    print('Generated code: $code');
+  }
+
   @override
   void initState() {
     super.initState();
-    _textController.addListener(() 
-{
-    var text =_textController.text;
-    if (text.length > 2 && !text.contains(')')) {
-      text = '+7 (${text.substring(0, 3)}) ';
-    }
-    if (text.length > 11 && !text.contains('-')) {
-      times++;
-      text= '${text.substring(0, 12)} - ';
-    }
-    if (text.length > 16 && text.contains('-') && times < 2) {
-      times++;
-      text= '${text.substring(0, 17)} - ';
-    }
-    _textController.text = text;
+    _textController.addListener(() {
+      String text = _textController.text;
+      if (text.length > 2 && !text.contains(')'))
+        text = '+7 (${text.substring(0, 3)}) ';
+      if (text.length > 11 && !text.contains('-')) {
+        times++;
+        text = '${text.substring(0, 12)} - ';
+      }
+      if (text.length > 16 && text.contains('-') && times < 2) {
+        times++;
+        text = '${text.substring(0, 17)} - ';
+      }
+      if (text != _textController.text) _textController.text = text;
     });
   }
+
   bool showButton = false;
+  bool showErrorDialog = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: const Color.fromARGB(255, 0, 0, 0),
+        title: Row(children: [
+          IconButton(
+              onPressed: () {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                      builder: (BuildContext context) => MyPage()),
+                );
+              },
+              icon: const Icon(Icons.arrow_back_ios)),
+          Spacer(
+            flex: 3,
+          ),
+          Text(
+            'Вход',
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+              letterSpacing: 2,
+            ),
+          ),
+          Spacer(
+            flex: 4,
+          ),
+        ]),
+      ),
       body: Center(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
+            const Spacer(),
             Row(children: [
-              SizedBox(
-                width: 20,
-              ),
-              IconButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (BuildContext context) => MyPage()),
-                    );
-                  },
-                  icon: Icon(Icons.arrow_back_ios)),
-            ]),
-            Spacer(),
-            Row(children: [
-              Spacer(),
+              if (!showButton) const Spacer(),
+              if (showButton) const SizedBox(width: 30),
               Container(
-                width: 300,
+                width: 266,
                 padding: const EdgeInsetsDirectional.only(
                     top: 0, bottom: 10, start: 10),
                 decoration: const BoxDecoration(
@@ -255,7 +276,7 @@ class _MyPageState extends State<MyPage> {
                         color: Colors.black,
                         offset: Offset(0, 0),
                         blurStyle: BlurStyle.solid,
-                        spreadRadius: 1,
+                        spreadRadius: 1.1,
                       ),
                     ],
                     borderRadius: BorderRadius.all(Radius.circular(20))),
@@ -268,26 +289,13 @@ class _MyPageState extends State<MyPage> {
                   keyboardType: TextInputType.number,
                   onChanged: (value) {
                     setState(() {
-                      showButton = _textController.text.length>21;
+                      showButton = _textController.text.length > 21;
                     });
-                      
-                   
                   },
-                  //     if(value.length > 4){
-                  //     showButton = true;
-
-                  //  }
-                  // },
-                  //  validator: (value) {
-                  //    final isDigitsOnly = int.tryParse(value!);
-                  //    return isDigitsOnly == null
-                  //        ? 'Input needs to be digits only'
-                  //        : null;
-                 //    },
                   inputFormatters: [
-                    FilteringTextInputFormatter.allow(RegExp(r'[0-9\-\(\)\+ ]')),
-                    //DateInputFormatter(),
-                    ],
+                    FilteringTextInputFormatter.allow(
+                        RegExp(r'[0-9\-\(\)\+ ]')),
+                  ],
                   style: const TextStyle(
                       fontSize: 26, fontWeight: FontWeight.w500),
                   decoration: InputDecoration(
@@ -303,29 +311,73 @@ class _MyPageState extends State<MyPage> {
                   ),
                 ),
               ),
-              Spacer(),
+              if (!showButton) const Spacer(),
               if (showButton)
-                ElevatedButton(
-                  style:ButtonStyle(
-
+                const SizedBox(
+                  width: 10,
+                ),
+              if (showButton)
+                Container(
+                  height: 77,
+                  width: 120,
+                  decoration: const BoxDecoration(
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black,
+                          offset: Offset(0, 0),
+                          blurStyle: BlurStyle.solid,
+                          spreadRadius: 1,
+                        ),
+                      ],
+                      color: Colors.white,
+                      borderRadius: BorderRadius.all(Radius.circular(20))),
+                  child: ElevatedButton(
+                    style: const ButtonStyle(
+                      backgroundColor: MaterialStatePropertyAll(
+                          Color.fromARGB(0, 255, 255, 255)),
+                      shadowColor: MaterialStatePropertyAll(
+                          Color.fromARGB(0, 255, 255, 255)),
+                    ),
+                    child: const Icon(
+                      Icons.arrow_forward_ios_rounded,
+                      color: Color.fromARGB(255, 255, 255, 255),
+                      shadows: [
+                        Shadow(
+                          color: Colors.black,
+                          blurRadius: 1,
+                        ),
+                        Shadow(
+                          color: Colors.black,
+                          blurRadius: 1,
+                        ),
+                        Shadow(
+                          color: Colors.black,
+                          blurRadius: 1,
+                        ),
+                        Shadow(
+                          color: Colors.black,
+                          blurRadius: 1,
+                        ),
+                      ],
+                      weight: 0.01,
+                      size: 60,
+                    ),
+                    onPressed: () {
+                      if (!_textController.text.startsWith('+7 985') ||
+                          !_textController.text.startsWith('+7 926')) {
+                        print("alo");
+                      }
+                      generateCode();
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                            builder: (BuildContext context) => Confirm()),
+                      );
+                    },
                   ),
-                
-                  
-                  child: const Text('Button'),
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (BuildContext context) => MyPage()),
-                    );
-                  },
-                  
-                
-
-              ),
-                
+                ),
             ]),
-            Spacer(),
+            const Spacer(),
           ],
         ),
       ),
@@ -333,8 +385,96 @@ class _MyPageState extends State<MyPage> {
   }
 }
 
-
-
+class Confirm extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: const Color.fromARGB(255, 0, 0, 0),
+        title: Row(children: [
+          IconButton(
+              onPressed: () {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                      builder: (BuildContext context) => MyPage()),
+                );
+              },
+              icon: const Icon(Icons.arrow_back_ios)),
+          Spacer(
+            flex: 3,
+          ),
+          Text(
+            'Вход',
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+              letterSpacing: 2,
+            ),
+          ),
+          Spacer(
+            flex: 4,
+          ),
+        ]),
+      ),
+      body: Container(
+        color: const Color.fromARGB(255, 255, 255, 255),
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                'Enter the 6-digit code',
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
+              ),
+              SizedBox(height: 10),
+              Center(
+                widthFactor: 400,
+                child: Container(
+                  width: 300,
+                  child: TextFormField(
+                    enableInteractiveSelection: false,
+                    maxLength: 22,
+                    cursorHeight: 40,
+                    cursorColor: const Color.fromARGB(255, 174, 174, 174),
+                    keyboardType: TextInputType.number,
+                    inputFormatters: [
+                      FilteringTextInputFormatter.allow(
+                          RegExp(r'[0-9\-\(\)\+ ]')),
+                    ],
+                    style: const TextStyle(
+                        letterSpacing: 8,
+                        fontSize: 26,
+                        fontWeight: FontWeight.w500),
+                    decoration: InputDecoration(
+                      counterText: '',
+                      helperText: 'dfksdgk',
+                      hintMaxLines: 2,
+                      hintText: '_ _ _ _ _ _',
+                      border: InputBorder.none,
+                      hintStyle: const TextStyle(
+                        fontSize: 40,
+                        height: 2,
+                        letterSpacing: 8,
+                        fontWeight: FontWeight.w400,
+                      ),
+                      error: Container(color: Colors.black),
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(height: 20),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
 
 
 
@@ -401,29 +541,29 @@ class _MyPageState extends State<MyPage> {
 //   TextEditingController _textController = TextEditingController();
 //   String formattedText = '';
 
-//   @override
+  // @override
 
-//   void initState() {
-//     super.initState();
+  // void initState() {
+  //   super.initState();
 
-//     _textController.addListener(() {
-//       setState(() {
-//         String inputText = _textController.text;
-//         if (inputText.length ==3) {
-//           inputText = '(${inputText.substring(0, 3)}) ';
-//         }
-//         if (inputText.length >= 9) {
-//             inputText = '${inputText.substring(0, 10)}-';
-//         }
-//         if (inputText.length >= 12){
-//             inputText = '${inputText.substring(0, 13)}-';
-//         }
-//         _textController.text = inputText;
-//         // _textController.dispose();
-//         // super.dispose();
-//       });
-//     });
-//   }
+  //   _textController.addListener(() {
+  //     setState(() {
+  //       String inputText = _textController.text;
+  //       if (inputText.length ==3) {
+  //         inputText = '(${inputText.substring(0, 3)}) ';
+  //       }
+  //       if (inputText.length >= 9) {
+  //           inputText = '${inputText.substring(0, 10)}-';
+  //       }
+  //       if (inputText.length >= 12){
+  //           inputText = '${inputText.substring(0, 13)}-';
+  //       }
+  //       _textController.text = inputText;
+  //       // _textController.dispose();
+  //       // super.dispose();
+  //     });
+  //   });
+  // }
 
 //   @override
 //   Widget build(BuildContext context) {

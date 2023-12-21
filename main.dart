@@ -168,42 +168,57 @@ class MyPage extends StatefulWidget {
   _MyPageState createState() => _MyPageState();
 }
 
-bool isButtonVisible(bool showButton, String text){
-  return showButton = text.length > 21;
-}
+// bool isButtonVisible(bool showButton, String text){
+//   return showButton = text.length > 21;
+// }
   
 
 
-class DateInputFormatter extends TextInputFormatter {
+// class DateInputFormatter extends TextInputFormatter {
+//   int times = 0;
+//   @override
+//   TextEditingValue formatEditUpdate(
+//       TextEditingValue oldValue, TextEditingValue newValue) {
+//     final text = newValue.text;
+//     if (text.length > 2 && !text.contains(')')) {
+//       return TextEditingValue(text: '+7 (${text.substring(0, 3)}) ');
+//     }
+//     if (text.length > 11 && !text.contains('-')) {
+//       times++;
+//       return TextEditingValue(text: '${text.substring(0, 12)} - ');
+//     }
+//     if (text.length > 16 && text.contains('-') && times < 2) {
+//       times++;
+//       return TextEditingValue(text: '${text.substring(0, 17)} - ');
+//     }
+//     return newValue;
+//   }
+// }
+
+class _MyPageState extends State<MyPage> {
+  final TextEditingController _textController = TextEditingController();
   int times = 0;
   @override
-  TextEditingValue formatEditUpdate(
-      TextEditingValue oldValue, TextEditingValue newValue) {
-    final text = newValue.text;
+  void initState() {
+    super.initState();
+    _textController.addListener(() 
+{
+    var text =_textController.text;
     if (text.length > 2 && !text.contains(')')) {
-      return TextEditingValue(text: '+7 (${text.substring(0, 3)}) ');
+      text = '+7 (${text.substring(0, 3)}) ';
     }
     if (text.length > 11 && !text.contains('-')) {
       times++;
-      return TextEditingValue(text: '${text.substring(0, 12)} - ');
+      text= '${text.substring(0, 12)} - ';
     }
     if (text.length > 16 && text.contains('-') && times < 2) {
       times++;
-      return TextEditingValue(text: '${text.substring(0, 17)} - ');
+      text= '${text.substring(0, 17)} - ';
     }
-    return newValue;
+    _textController.text = text;
+    });
   }
-}
-
-class _MyPageState extends State<MyPage> {
   bool showButton = false;
-  TextEditingController _textController = TextEditingController();
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   _textController.addListener(() {});
-    
-  // }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -230,7 +245,7 @@ class _MyPageState extends State<MyPage> {
             Row(children: [
               Spacer(),
               Container(
-                width: 280,
+                width: 300,
                 padding: const EdgeInsetsDirectional.only(
                     top: 0, bottom: 10, start: 10),
                 decoration: const BoxDecoration(
@@ -246,15 +261,18 @@ class _MyPageState extends State<MyPage> {
                     borderRadius: BorderRadius.all(Radius.circular(20))),
                 child: TextFormField(
                   enableInteractiveSelection: false,
-                  // controller: _textController,
+                  controller: _textController,
                   maxLength: 22,
                   cursorHeight: 40,
                   cursorColor: const Color.fromARGB(255, 174, 174, 174),
                   keyboardType: TextInputType.number,
-                   onChanged: (value) {
-                      isButtonVisible(showButton, value);
+                  onChanged: (value) {
+                    setState(() {
+                      showButton = _textController.text.length>21;
+                    });
+                      
                    
-                    
+                  },
                   //     if(value.length > 4){
                   //     showButton = true;
 
@@ -265,10 +283,10 @@ class _MyPageState extends State<MyPage> {
                   //    return isDigitsOnly == null
                   //        ? 'Input needs to be digits only'
                   //        : null;
-                     },
+                 //    },
                   inputFormatters: [
                     FilteringTextInputFormatter.allow(RegExp(r'[0-9\-\(\)\+ ]')),
-                    DateInputFormatter(),
+                    //DateInputFormatter(),
                     ],
                   style: const TextStyle(
                       fontSize: 26, fontWeight: FontWeight.w500),
@@ -288,6 +306,12 @@ class _MyPageState extends State<MyPage> {
               Spacer(),
               if (showButton)
                 ElevatedButton(
+                  style:ButtonStyle(
+
+                  ),
+                
+                  
+                  child: const Text('Button'),
                   onPressed: () {
                     Navigator.push(
                       context,
@@ -295,8 +319,11 @@ class _MyPageState extends State<MyPage> {
                           builder: (BuildContext context) => MyPage()),
                     );
                   },
-                  child: const Text('Button'),
-                ),
+                  
+                
+
+              ),
+                
             ]),
             Spacer(),
           ],

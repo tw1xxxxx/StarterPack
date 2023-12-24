@@ -1,151 +1,3 @@
-// import 'package:flutter/material.dart';
-// import 'package:flutter/services.dart';
-
-// class InputPage extends StatefulWidget {
-//   @override
-//   _InputPageState createState() => _InputPageState();
-// }
-
-// class _InputPageState extends State<InputPage> {
-//   // TextEditingController _textController = TextEditingController();
-//   // String formattedText = '';
-
-//   //  @override
-//   //  void initState() {
-//   //    super.initState();
-
-//   //    _textController.addListener(() {
-//   // //     setState(() {
-//   // //       if (_textController.text.length > 7) {
-//   // //         // Ограничиваем длину ввода до 8 символов
-//   // //         _textController.text = _textController.text.substring(0, 8);
-//   // //       }
-
-//   // //       String inputText = _textController.text;
-//   // //       if (inputText.length >= 3) {
-//   // //         // Добавляем скобки вокруг первых 3 чисел
-//   // //         String firstThreeDigits = inputText.substring(0, 3);
-//   // //         inputText = '(${inputText.substring(0, 3)})';
-
-//   // //         if (inputText.length >= 7) {
-//   // //           // Добавляем тире между 3-им и 4-ым, а также между 6-ым и 7-ым числами
-//   // //           inputText =
-//   // //               '${inputText.substring(0, 7)}-${inputText.substring(7)}';
-//   // //         }
-//   // //       }
-
-//   // //       formattedText = inputText;
-//   //      });
-//   //  //  });
-//   //  }
-
-//   // @override
-//   // void dispose() {
-//   //   _textController.dispose();
-//   //   super.dispose();
-//   // }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return MaterialApp(
-//       home: Scaffold(
-//         appBar: AppBar(title: Text('Date Input')),
-//         body: Center(
-//           child: Padding(
-//             padding: const EdgeInsets.all(8.0),
-//             child: Container(
-//                 child: TextFormField(
-//                 enableSuggestions: false,
-//                 maxLength:  22,
-//                 keyboardType: TextInputType.number,
-//               // validator: (value) {
-//               //   final isDigitsOnly = int.tryParse(value!);
-//               //   return isDigitsOnly == null
-//               //       ? 'Input needs to be digits only'
-//               //       : null;
-//               // },
-//               inputFormatters: [
-//                 DateInputFormatter(),
-//               ],
-//               decoration: InputDecoration(labelText: 'Date'),
-//             )),
-//           ),
-//         ),
-//       ),
-//     );
-//   }
-// }
-
-// class DateInputFormatter extends TextInputFormatter {
-//   int times = 0;
-//   @override
-//   TextEditingValue formatEditUpdate(
-//       TextEditingValue oldValue, TextEditingValue newValue) {
-//     final text = newValue.text;
-
-//     if (text.length > 2 && !text.contains(')')) {
-//       return TextEditingValue(
-//         text: '+7 (${text.substring(0, 3)}) ',
-//        // selection: TextSelection.collapsed(offset: text.length + 6),
-//       );
-//     }
-//     if (text.length > 11 && !text.contains('-')) {
-//       times++;
-//       print(text.length);
-//       return TextEditingValue(
-//         text: '${text.substring(0, 12)} - ',
-//         //selection: TextSelection.collapsed(offset: text.length + 3),
-//       );
-//     }
-//     if (text.length > 16 && text.contains('-') && times < 2) {
-//       times++;
-//       print(text.length);
-//       return TextEditingValue(
-//         text: '${text.substring(0, 17)} - ',
-//         //selection: TextSelection.collapsed(offset: text.length + 2,affinity: TextAffinity.upstream),
-//        // selection: TextSelection.fromPosition(TextPosition(offset: 19)),
-//        //selection: TextSelection(baseOffset: 3, extentOffset: 25)
-//       );
-
-//     }
-//     return newValue;
-//   }
-// }
-// //   Widget build(BuildContext context) {
-// //     return Scaffold(
-// //       appBar: AppBar(
-// //         title: Text('Input Page'),
-// //       ),
-// //       body: Padding(
-// //         padding: const EdgeInsets.all(16.0),
-// //         child: Column(children: [
-// //           TextField(
-// //             controller: _textController,
-// //             decoration: InputDecoration(
-// //               hintText: 'Введите текст',
-// //             ),
-// //           ),
-// //           SizedBox(height: 16.0),
-// //           Text(
-// //             formattedText,
-// //             style: TextStyle(fontSize: 24.0),
-// //           ),
-
-// //         ]),
-// //       ),
-// //     );
-// //   }
-// // }
-
-// void main() {
-//   runApp(MaterialApp(
-//     home: InputPage(),
-//   ));
-// }
-
-// import 'package:flutter/material.dart';
-// import 'package:flutter/services.dart';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'dart:math';
@@ -155,6 +7,8 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -165,45 +19,20 @@ class MyApp extends StatelessWidget {
 }
 
 class MyPage extends StatefulWidget {
+  const MyPage({super.key});
+
   @override
   _MyPageState createState() => _MyPageState();
 }
-
-// bool isButtonVisible(bool showButton, String text){
-//   return showButton = text.length > 21;
-// }
-
-// class DateInputFormatter extends TextInputFormatter {
-//   int times = 0;
-//   @override
-//   TextEditingValue formatEditUpdate(
-//       TextEditingValue oldValue, TextEditingValue newValue) {
-//     final text = newValue.text;
-//     if (text.length > 2 && !text.contains(')')) {
-//       return TextEditingValue(text: '+7 (${text.substring(0, 3)}) ');
-//     }
-//     if (text.length > 11 && !text.contains('-')) {
-//       times++;
-//       return TextEditingValue(text: '${text.substring(0, 12)} - ');
-//     }
-//     if (text.length > 16 && text.contains('-') && times < 2) {
-//       times++;
-//       return TextEditingValue(text: '${text.substring(0, 17)} - ');
-//     }
-//     return newValue;
-//   }
-// }
-
 class _MyPageState extends State<MyPage> {
   final TextEditingController _textController = TextEditingController();
   int times = 0;
-
-  void generateCode() {
+    String generateCode() {
     String code = '';
     for (int i = 0; i < 6; i++) code += (0 + Random().nextInt(9)).toString();
     print('Generated code: $code');
+    return code;
   }
-
   @override
   void initState() {
     super.initState();
@@ -266,7 +95,7 @@ class _MyPageState extends State<MyPage> {
               if (!showButton) const Spacer(),
               if (showButton) const SizedBox(width: 30),
               Container(
-                width: 266,
+                width: 300,
                 padding: const EdgeInsetsDirectional.only(
                     top: 0, bottom: 10, start: 10),
                 decoration: const BoxDecoration(
@@ -367,11 +196,11 @@ class _MyPageState extends State<MyPage> {
                           !_textController.text.startsWith('+7 926')) {
                         print("alo");
                       }
-                      generateCode();
+                      
                       Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
-                            builder: (BuildContext context) => Confirm()),
+                            builder: (BuildContext context) => Confirm(code: generateCode())),
                       );
                     },
                   ),
@@ -385,7 +214,14 @@ class _MyPageState extends State<MyPage> {
   }
 }
 
+
 class Confirm extends StatelessWidget {
+  String code = '';
+  Confirm({
+    super.key,
+  required this.code
+  });
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -405,7 +241,7 @@ class Confirm extends StatelessWidget {
             flex: 3,
           ),
           Text(
-            'Вход',
+            'Подтверждение',
             style: TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.bold,
@@ -421,24 +257,48 @@ class Confirm extends StatelessWidget {
         color: const Color.fromARGB(255, 255, 255, 255),
         child: Center(
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+          
             children: [
+              Spacer(),
               Text(
-                'Enter the 6-digit code',
+                'Введите 6-значный код, отправленный на номер:\n',
                 style: TextStyle(
-                  fontSize: 18,
+                  fontSize: 15,
                   fontWeight: FontWeight.bold,
-                  color: Colors.white,
+                  color: const Color.fromARGB(255, 0, 0, 0),
                 ),
               ),
+              Center(
+                child: Text(
+                '+798538632361',
+                style: TextStyle(
+                  fontSize: 23,
+                  fontWeight: FontWeight.bold,
+                  color: Color.fromARGB(255, 0, 0, 0),
+                ),
+              ),
+              ),
+              
               SizedBox(height: 10),
               Center(
-                widthFactor: 400,
                 child: Container(
-                  width: 300,
+                  width: 290,
                   child: TextFormField(
+                    onChanged: (value) {
+                      if (value.length == 6){
+                      if(value == code){
+                         Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                            builder: (BuildContext context) => MyPage()),
+                      );
+
+                      }
+                      else print('Код неверерн');
+                      }
+                    },
                     enableInteractiveSelection: false,
-                    maxLength: 22,
+                    maxLength: 6,
                     cursorHeight: 40,
                     cursorColor: const Color.fromARGB(255, 174, 174, 174),
                     keyboardType: TextInputType.number,
@@ -447,7 +307,7 @@ class Confirm extends StatelessWidget {
                           RegExp(r'[0-9\-\(\)\+ ]')),
                     ],
                     style: const TextStyle(
-                        letterSpacing: 8,
+                        letterSpacing: 31,
                         fontSize: 26,
                         fontWeight: FontWeight.w500),
                     decoration: InputDecoration(
@@ -468,6 +328,7 @@ class Confirm extends StatelessWidget {
                 ),
               ),
               SizedBox(height: 20),
+              Spacer(flex: 2),
             ],
           ),
         ),
